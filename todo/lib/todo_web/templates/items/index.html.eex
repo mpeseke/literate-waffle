@@ -1,0 +1,36 @@
+<h1>Items</h1>
+
+<%= form_for @changeset, Routes.items_path(@conn, :create), fn f -> %>
+    <label>
+        Add a new todo item: <%= text_input f, :description %>
+    </label>
+    <label>
+        Initiative Value: <%= number_input f, :initiative %>
+    </label>
+
+    <%= submit "Submit" %>
+<% end %>
+
+<%= for item <- @items do %>
+    <%= if item.completed do%>
+        <div style="background-color:green;">
+            <h3><%= item.description %></h3>
+            <p>Completed</p>
+            <p><%= item.initiative %></p>
+            <div>
+                <%=link("Delete", to: "/items/#{item.id}", method: :delete) %>
+            </div>
+        </div>
+    <% else %>
+         <div style="background-color:red;">
+            <h3><%= item.description%></h3>
+            <p>To Be Done</p>
+            <p><%= item.initiative%></p>
+            <div>
+                <%=link("Mark as completed", to: "/items/#{item.id}/complete", method: :patch) %> |
+                <%=link("Delete", to: "/items/#{item.id}", method: :delete) %>
+            </div>
+        </div>
+    <% end %>   
+<% end %>
+
